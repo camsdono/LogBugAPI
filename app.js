@@ -4,17 +4,15 @@ const rateLimit = require("express-rate-limit");
 const bodyParser = require('body-parser');
 
 var figlet = require("figlet");
-
 const chalk = require('chalk');
-
 
 const app = express();
 
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '',
-  database: 'logbug'
+  password: 'Camsdono27112006',
+  database: 'LogBug'
 });
 
 const limiter = rateLimit({
@@ -127,7 +125,7 @@ app.post('/createbug', limiter, (req, res) => {
       if (error) {
         res.status(500).send('Error retrieving project with apiKey ' + projectApiKey);
       } else if (results.length === 0) {
-        res.status(404).send('Project with id ' + projectID + ' not found');
+        res.status(404).send('Project with apiKey ' + projectApiKey + ' not found');
       } else {
         const project = results[0];
         if (project.apiKey !== projectApiKey) {
@@ -224,6 +222,14 @@ app.post('/assignbug',limiter, (req, res) => {
   }
 });
 
+app.post('/getallbugs',limiter, (req, res) => {
+  //ToDo
+});
+
+app.post('/openclosebug',limiter, (req, res) => {
+  // ToDO 
+});
+
 app.listen(3000, () => {
   figlet("LogBug", function (err, data) {
     if (err) {
@@ -235,18 +241,18 @@ app.listen(3000, () => {
 
     console.log(coloredOutput);
   });
-  figlet("Softwares", function (err, data) {
+  figlet("Software", function (err, data) {
     if (err) {
       console.log("Something went wrong...");
       console.dir(err);
       return;
     }
-    const coloredOutput = chalk.red(data);
+    const coloredOutput = chalk.blue(data);
 
     console.log(coloredOutput);
   });
 
-  // wait for lines above to finish
+
   setTimeout(function () {
 
     connection.connect((error) => {
